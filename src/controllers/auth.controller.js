@@ -1,6 +1,6 @@
-import User from "../models/User.js";
+import { Users } from "../models/User.js";
 import bcrypt from "bcrypt";
-import { generateToken } from "../utils/generateToken.js";
+import generateToken from "../utils/generateToken.js";
 
 // Register
 export const register = async (req, res) => {
@@ -8,7 +8,7 @@ export const register = async (req, res) => {
     const { name, email, password, role } = req.body;
 
     // cek user
-    const userExist = await User.findOne({ email });
+    const userExist = await Users.findOne({ email });
     if (userExist) {
       return res.status(400).json({ message: "User already exist" });
     }
@@ -18,7 +18,7 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // simpan user baru
-    const user = await User.create({
+    const user = await Users.create({
       name,
       password: hashedPassword,
       email,
@@ -45,7 +45,7 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     // cek user
-    const user = await User.find0ne({ email });
+    const user = await Users.findOne({ email }); // typo diperbaiki
     if (!user) {
       return res.status(401).json({ message: "Invalid email" });
     }
