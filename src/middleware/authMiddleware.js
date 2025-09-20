@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import { Users } from "../models/User.js";
 
 export const protect = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -27,8 +28,16 @@ export const protect = async (req, res, next) => {
 };
 
 export const admin0nly = async (req, res, next) => {
-  if (!req.user || req.user.role !== "admin") {
-    return res.status(403).json({ message: "You are not an admin" });
+  try {
+    const { name, email, role } = req.body;
+    const userExist = await Users.findOne({ email, name });
+    if (!userExist || role !== "admin") {
+      const error = new Error("You are not an admin");
+      throw error;
+    }
+    res.json({ message: "You are an admin" });
+  } catch (error) {
+    return res.status(403).json({ message: error.message });
   }
   next();
 };
