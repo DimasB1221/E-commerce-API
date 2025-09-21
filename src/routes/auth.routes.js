@@ -9,7 +9,7 @@ const router = express.Router();
 router.post("/register", register);
 
 // login user / admin
-router.post("/login", protect, login);
+router.post("/login", login);
 
 router.get("/me", protect, (req, res) => {
   res.status(200).json({
@@ -20,8 +20,6 @@ router.get("/me", protect, (req, res) => {
   });
 });
 
-router.get("/admin", admin0nly, (req, res) => {
-  res.status(200).json({ message: "You are an admin" });
-});
+router.get("/admin", admin0nly, protect);
 
 export default router;
