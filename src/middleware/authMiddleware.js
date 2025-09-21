@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import { Users } from "../models/User.js";
 
 export const protect = async (req, res, next) => {
+  // cek token
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(404).json({ message: "Token not found" });
@@ -29,13 +29,21 @@ export const protect = async (req, res, next) => {
 
 export const admin0nly = async (req, res, next) => {
   try {
-    const { name, email, role } = req.body;
-    const userExist = await Users.findOne({ email, name });
-    if (!userExist || role !== "admin") {
+    // cek token
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(404).json({ message: "Token not found" });
+    }
+    const token = authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(404).json({ message: "Token not found" });
+    }
+    // cek token khusus admin
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.role !== "admin") {
       const error = new Error("You are not an admin");
       throw error;
     }
-    res.json({ message: "You are an admin" });
   } catch (error) {
     return res.status(403).json({ message: error.message });
   }
