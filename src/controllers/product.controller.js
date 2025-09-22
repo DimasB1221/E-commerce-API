@@ -20,7 +20,6 @@ export const getProductById = async (req, res, next) => {
       throw err;
     }
     res.status(200).json(productId);
-    next();
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
@@ -30,8 +29,9 @@ export const getProductById = async (req, res, next) => {
 export const createProduct = async (req, res, next) => {
   try {
     const { name, price, description, category, stock, images } = req.body;
-    if (!name || !price || !description || !category || !stock || !images) {
-      const err = new Error("All fields are required");
+    const productExist = await Products.findOne({ name });
+    if (productExist) {
+      const err = new Error("Product already exists");
       throw err;
     }
     const newProduct = await Products.create({
@@ -43,7 +43,6 @@ export const createProduct = async (req, res, next) => {
       images,
     });
     res.status(201).json(newProduct);
-    next();
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -67,7 +66,6 @@ export const updateProduct = async (req, res, next) => {
 
     await productId.save();
     res.status(200).json(productId);
-    next();
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
@@ -82,7 +80,6 @@ export const deleteProduct = async (req, res, next) => {
       throw err;
     }
     res.status(200).json({ message: "Product deleted successfully" });
-    next();
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
