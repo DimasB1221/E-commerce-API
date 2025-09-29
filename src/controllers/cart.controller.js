@@ -1,5 +1,4 @@
 import Cart from "../models/Cart.js";
-import Products from "../models/Product.js";
 
 // add to cart
 export const addToCart = async (req, res) => {
@@ -22,7 +21,6 @@ export const addToCart = async (req, res) => {
       const itemIndex = await cart.products.findIndex(
         (item) => item.product.toString() === productId
       );
-      console.log(itemIndex);
       if (itemIndex > -1) {
         // product sudah ada di cart maka update quantity
         cart.products[itemIndex].quantity += quantity;
@@ -42,7 +40,10 @@ export const addToCart = async (req, res) => {
 
 export const getCart = async (req, res) => {
   try {
-    const cart = await Cart.find();
+    const cart = await Cart.findOne({ user: req.user.userId }).populate(
+      "products.product",
+      "name price"
+    );
     if (!cart) {
       const error = new Error("Cart not found");
       throw error;
