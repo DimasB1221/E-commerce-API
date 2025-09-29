@@ -1,5 +1,4 @@
-import mongoose, { model, Schema } from "mongoose";
-
+import mongoose, { Schema } from "mongoose";
 const userSchema = new Schema(
   {
     name: { type: String, required: true },
@@ -11,6 +10,5 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-// Inisialisasi plugin dengan mongoose
 
-export const Users = model("User", userSchema);
+export default mongoose.model("Users", userSchema);
