@@ -20,6 +20,4 @@ router.get("/me", protect, (req, res) => {
   });
 });
 
-router.get("/admin", admin0nly, protect);
-
 export default router;
