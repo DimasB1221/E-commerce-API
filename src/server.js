@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import orderRoutes from "./routes/order.routes.js";
+import { swaggerUi, swaggerSpec } from "./config/swagger.js";
 import "dotenv/config";
 
 // Connect to MongoDB
@@ -25,6 +26,9 @@ app.use("/api/cart", cartRoutes);
 
 // order routes
 app.use("/api/orders", orderRoutes);
+
+// Swagger docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);
