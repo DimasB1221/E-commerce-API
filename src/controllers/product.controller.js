@@ -1,5 +1,6 @@
 // getAllProducts
 import Products from "../models/Product.js";
+import cloudinary from "../config/cloudinary.js";
 
 export const getAllProducts = async (req, res, next) => {
   try {
@@ -28,8 +29,17 @@ export const getProductById = async (req, res, next) => {
 // createProduct - admin only
 export const createProduct = async (req, res, next) => {
   try {
-    const { name, price, description, category, stock, images } = req.body;
+    const { name, price, description, category, stock } = req.body;
     const productExist = await Products.findOne({ name });
+    let imageUrl = null;
+
+    if (req.file) {
+      const uploadRes = await cloudinary.uploader.upload(req.file.path, {
+        folder: "ecommerce-products",
+      });
+      imageUrl = uploadRes.secure_url;
+    }
+
     if (productExist) {
       const err = new Error("Product already exists");
       throw err;
@@ -40,7 +50,7 @@ export const createProduct = async (req, res, next) => {
       description,
       category,
       stock,
-      images,
+      images: imageUrl,
     });
     res.status(201).json(newProduct);
   } catch (err) {
