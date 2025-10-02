@@ -29,6 +29,7 @@ export const addToCart = async (req, res) => {
         cart.products.push({ product: productId, quantity });
       }
       await cart.save();
+      await cart.populate("products.product", "name price");
       return res.status(200).json(cart);
     }
   } catch (error) {
