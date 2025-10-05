@@ -264,6 +264,6 @@ router.put("/", protect, updateCart);
  *       404:
  *         description: Produk tidak ditemukan di cart
  */
-router.delete("/:id", protect, admin0nly, removeCart);
+router.delete("/:id", protect, removeCart);
 
 export default router;
