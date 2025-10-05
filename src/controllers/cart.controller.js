@@ -108,6 +108,11 @@ export const removeCart = async (req, res) => {
     if (itemIndex > -1) {
       // product already exists in cart, update quantity
       cart.products[itemIndex].quantity -= quantityToRemove;
+
+      // TAMBAHKAN INI: Hapus item jika quantity <= 0
+      if (cart.products[itemIndex].quantity <= 0) {
+        cart.products.splice(itemIndex, 1); // Hapus item dari array
+      }
     }
 
     if (cart.products.length === 0) {
