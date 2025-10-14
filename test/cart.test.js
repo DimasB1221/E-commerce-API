@@ -145,7 +145,7 @@ describe("Cart endpoints", () => {
       const res = await request(app)
         .get("/api/cart")
         .set("Authorization", `Bearer ${userToken}`);
-
+      console.log(res.body);
       expect(res.statusCode).toBe(404);
       expect(res.body).toHaveProperty("message");
     });
