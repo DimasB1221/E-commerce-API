@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "NODE_ENV=test node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --detectOpenHandles",
-    "dev": "nodemon ./src/server.js"
+    "dev": "nodemon ./src/server.js",
+    "start": "node server.js"
   },
   "keywords": [
     "E-commerce"
