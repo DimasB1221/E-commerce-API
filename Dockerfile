@@ -1,5 +1,6 @@
-# Gunakan image Node.js versi 18
-FROM node:18
+# Gunakan image Node.js versi 20
+FROM node:20
+
 
 # Set direktori kerja
 WORKDIR /app
