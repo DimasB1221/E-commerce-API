@@ -1,9 +1,16 @@
 import morgan from "morgan";
-import logger from "../config/logger.js";
+import logger from "../middleware/logger.js";
 import path from "path";
 import fs from "fs";
 
 // Create a write stream untuk access logs
+const logsDir = path.join(process.cwd(), "logs");
+
+// Cek apakah folder logs sudah ada, kalau belum buat
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
+
 const accessLogStream = fs.createWriteStream(
   path.join(logsDir, "access.log"),
   { flags: "a" } // append mode
