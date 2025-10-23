@@ -1,5 +1,6 @@
 import winston from "winston";
 import path from "path";
+import "dotenv/config";
 
 // Define log levels
 const levels = {

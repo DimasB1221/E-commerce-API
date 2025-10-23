@@ -2,6 +2,7 @@ import morgan from "morgan";
 import logger from "../middleware/logger.js";
 import path from "path";
 import fs from "fs";
+import "dotenv/config";
 
 // Create a write stream untuk access logs
 const logsDir = path.join(process.cwd(), "logs");
