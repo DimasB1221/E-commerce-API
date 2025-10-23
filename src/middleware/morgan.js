@@ -52,7 +52,8 @@ const morganWinston = morgan(morganFormat, { stream });
 
 // Export berdasarkan environment
 const setupMorgan = () => {
-  const env = process.env.production.NODE_ENV || "development";
+  console.log(process.env.NODE_ENV);
+  const env = process.env.NODE_ENV || "development";
 
   if (env === "development") {
     return [morganDev, morganWinston];

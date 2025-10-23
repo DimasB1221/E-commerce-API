@@ -13,7 +13,8 @@ const levels = {
 
 // Set level based on environment
 const level = () => {
-  const env = process.env.production.NODE_ENV || "development";
+  console.log(process.env.NODE_ENV);
+  const env = process.env.NODE_ENV || "development";
   const isDevelopment = env === "development";
   return isDevelopment ? "debug" : "http";
 };
