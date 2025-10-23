@@ -6,10 +6,15 @@ import cartRoutes from "./routes/cart.routes.js";
 import orderRoutes from "./routes/order.routes.js";
 import { swaggerUi, swaggerSpec } from "./config/swagger.js";
 
+import setupMorgan from "./middleware/morgan.js";
+
 const app = express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+
+const morganMiddleware = setupMorgan();
+morganMiddleware.forEach((middleware) => app.use(middleware));
 
 // auth routes
 app.use("/api/auth", authRoutes);
