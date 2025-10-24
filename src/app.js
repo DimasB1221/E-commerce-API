@@ -4,8 +4,8 @@ import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import orderRoutes from "./routes/order.routes.js";
+import healthRoutes from "./routes/health.routes.js";
 import { swaggerUi, swaggerSpec } from "./config/swagger.js";
-
 import setupMorgan from "./middleware/morgan.js";
 
 const app = express();
@@ -27,6 +27,9 @@ app.use("/api/cart", cartRoutes);
 
 // order routes
 app.use("/api/orders", orderRoutes);
+
+// health routes
+app.use("/api", healthRoutes);
 
 // Swagger docs
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
