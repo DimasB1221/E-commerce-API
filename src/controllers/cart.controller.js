@@ -15,10 +15,12 @@ export const addToCart = async (req, res) => {
     if (!cart) {
       logger.debug("User has no cart, creating new cart", { userId });
 
-      cart = new Cart({
+      cart = await new Cart({
         user: userId,
         products: [{ product: productId, quantity }],
       });
+      console.log(cart._id);
+      await cart.populate("products.product", "name price");
       await cart.save();
 
       logger.info("New cart created and product added", {
@@ -62,9 +64,8 @@ export const addToCart = async (req, res) => {
           quantity,
         });
       }
-
-      await cart.save();
       await cart.populate("products.product", "name price");
+      await cart.save();
 
       logger.info("Cart updated successfully", {
         userId,
