@@ -1,7 +1,7 @@
 import Cart from "../models/Cart.js";
 import Order from "../models/Order.js";
-import Product from "../models/Product.js";
 import logger from "../middleware/logger.js";
+import { getIO } from "../socket/index.js";
 
 // createOrder
 export const createOrder = async (req, res) => {
@@ -73,6 +73,19 @@ export const createOrder = async (req, res) => {
       totalPrice: order.totalPrice,
       status: order.status,
     });
+
+    // emit real-time
+    try {
+      const io = getIO();
+      io.emit("order:new", { message: "New order created", order });
+      logger.info(`📦 New order event emitted for Order ID: ${order._id}`);
+    } catch (socketError) {
+      logger.error("Failed to emit order:new event", {
+        error: socketError.message,
+        orderId: order._id,
+        userId,
+      });
+    }
 
     // 4. Kosongkan cart
     logger.debug("Clearing cart after order creation", {
